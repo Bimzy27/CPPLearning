@@ -40,7 +40,7 @@ public:
             equation.push(curNum);
         }
 
-        float result = 0;
+        float result = 0.0f;
         char op = '+';
 
         //Calculate equation
