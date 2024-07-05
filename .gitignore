@@ -34,3 +34,5 @@
 *.ipch
 *.vsidx
 *.opendb
+
+*x64*
