@@ -6,13 +6,15 @@
 #include <queue>
 #include <set>
 
+using namespace std;
+
 class Calculator
 {
 public:
-    int Calculate(std::string input)
+    float Calculate(string input)
     {
-        std::set<char> operands = {'+', '-', '*', '/'};
-        std::queue<std::string> equation;
+        set<char> operands = {'+', '-', '*', '/'};
+        queue<string> equation;
 
         //Create equation from string
         std::string curNum = "";
@@ -21,17 +23,21 @@ public:
             char c = input[0];
             input.erase(input.begin());
 
-            if (isdigit(c))
+            if (isdigit(c) || c == '.')
             {
                 curNum += c;
             }
             else if (operands.find(c) != operands.end())
             {
                 equation.push(curNum);
-                std::string str(1, c);
+                string str(1, c);
                 equation.push(str);
                 curNum = "";
             }
+        }
+        if (curNum != "")
+        {
+            equation.push(curNum);
         }
 
         float result = 0;
@@ -46,10 +52,10 @@ public:
             }
             else
             {
-                float f = std::stof(equation.front());
+                float f = stof(equation.front());
                 if (op == '+')
                 {
-                    result += f;
+                    result = result + f;
                 }
                 else if (op == '-')
                 {
@@ -63,8 +69,6 @@ public:
                 {
                     result /= f;
                 }
-
-                std::cout << "result: " << result << " op: " << op << "\n";
             }
 
             equation.pop();
@@ -76,10 +80,14 @@ public:
 
 int main()
 {
-    std::string input = "input";
+    string input = "input";
     Calculator calcualtor;
-    std::cout << "Type in your equation:\n";
-    std::cin >> input;
-    std::cout << "Your equation equals: " << calcualtor.Calculate(input);
+    while (true)
+    {
+        cout << "Type in your equation:\n";
+        cin >> input;
+        cout << "Your equation equals: " << calcualtor.Calculate(input) << "\n";
+    }
+    
     return 0;
 }

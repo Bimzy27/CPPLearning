@@ -5,6 +5,9 @@
     {
       "AbsoluteMoniker": "D:0:0:{1F818945-05F3-43CD-8A89-93A4E3126BD4}|TextBasedCalculator\\TextBasedCalculator.vcxproj|C:\\Programming\\CPPLearning\\TextBasedCalculator\\TextBasedCalculator\\TextBasedCalculator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1F818945-05F3-43CD-8A89-93A4E3126BD4}|TextBasedCalculator\\TextBasedCalculator.vcxproj|solutionrelative:TextBasedCalculator\\TextBasedCalculator.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.38.33130\\INCLUDE\\STRING||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +17,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "string",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\include\\string",
+              "RelativeDocumentMoniker": "..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\include\\string",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\include\\string",
+              "RelativeToolTip": "..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\include\\string",
+              "ViewState": "AQIAALIAAAAAAAAAAAAowNAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-07-05T07:02:16.862Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +39,7 @@
               "RelativeDocumentMoniker": "TextBasedCalculator\\TextBasedCalculator.cpp",
               "ToolTip": "C:\\Programming\\CPPLearning\\TextBasedCalculator\\TextBasedCalculator\\TextBasedCalculator.cpp",
               "RelativeToolTip": "TextBasedCalculator\\TextBasedCalculator.cpp",
-              "ViewState": "AQIAAA0AAAAAAAAAAAAewEcAAAAAAAAA",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAAFMAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-07-05T04:38:30.515Z",
               "EditorCaption": ""
