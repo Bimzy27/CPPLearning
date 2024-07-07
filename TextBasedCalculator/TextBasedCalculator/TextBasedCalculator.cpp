@@ -29,7 +29,10 @@ public:
             }
             else if (operands.find(c) != operands.end())
             {
-                equation.push(curNum);
+                if (curNum != "")
+                {
+                    equation.push(curNum);
+                }
                 string str(1, c);
                 equation.push(str);
                 curNum = "";
@@ -55,7 +58,7 @@ public:
                 float f = stof(equation.front());
                 if (op == '+')
                 {
-                    result = result + f;
+                    result += f;
                 }
                 else if (op == '-')
                 {
