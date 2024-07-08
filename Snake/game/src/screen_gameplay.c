@@ -49,7 +49,6 @@ Vector2 pickupCoord;
 // Gameplay Screen Initialization logic
 void InitGameplayScreen(void)
 {
-    // TODO: Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
     finishScreen = 0;
 
@@ -141,20 +140,41 @@ void UpdateGameplayScreen(void)
         PlaySound(fxCoin);
     }
 
-    // Player collision
+    // Player self collision
     for (size_t i = 0; i < playerLength - 1; i++)
     {
-        
+        if (playerCoordX[0] == playerCoordX[i + 1] && playerCoordY[0] == playerCoordY[i + 1])
+        {
+            finishScreen = 1;
+            PlaySound(fxCoin);
+        }
     }
 
     // Pickup collision
     if (playerCoordX[0] == pickupCoord.x && playerCoordY[0] == pickupCoord.y)
     {
-        // Relocate pickup
+        // Add to player length
         playerCoordX[playerLength] = playerCoordX[playerLength - 1];
         playerCoordY[playerLength] = playerCoordY[playerLength - 1];
+        switch (direction) // Add 1 to the starting location of the new player coord to avoid collision issues
+        {
+            case 0:
+            default:
+                playerCoordX[playerLength] -= 1;
+                break;
+            case 1:
+                playerCoordX[playerLength] += 1;
+                break;
+            case 2:
+                playerCoordY[playerLength] += 1;
+                break;
+            case 3:
+                playerCoordY[playerLength] -= 1;
+                break;
+        }
         playerLength += 1;
 
+        // Relocate pickup
         bool relocated = false;
         while (!relocated)
         {
@@ -199,7 +219,14 @@ void DrawGameplayScreen(void)
 // Gameplay Screen Unload logic
 void UnloadGameplayScreen(void)
 {
-    // TODO: Unload GAMEPLAY screen variables here!
+    framesCounter = 0;
+    finishScreen = 0;
+    playerCoordX[0] = gridWidth / 2;
+    playerCoordY[0] = gridHeight / 2;
+    playerLength = 1;
+    direction = 0;
+    pickupCoord.x = playerCoordX[0] + 15;
+    pickupCoord.y = playerCoordY[0];
 }
 
 // Gameplay Screen should finish?
