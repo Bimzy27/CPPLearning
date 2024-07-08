@@ -31,6 +31,7 @@
 //----------------------------------------------------------------------------------
 static int framesCounter = 0;
 static int finishScreen = 0;
+Vector2 playerCoord;
 
 //----------------------------------------------------------------------------------
 // Gameplay Screen Functions Definition
@@ -39,32 +40,60 @@ static int finishScreen = 0;
 // Gameplay Screen Initialization logic
 void InitGameplayScreen(void)
 {
-    // TODO: Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
     finishScreen = 0;
+    playerCoord.x = gridWidth / 2;
+    playerCoord.y = gridHeight - 2;
 }
 
 // Gameplay Screen Update logic
 void UpdateGameplayScreen(void)
 {
-    // TODO: Update GAMEPLAY screen variables here!
-
-    // Press enter or tap to change to ENDING screen
-    if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+    if (IsKeyPressed(KEY_ENTER))
     {
-        finishScreen = 1;
         PlaySound(fxCoin);
     }
+
+    // Game Tick
+    if (framesCounter % 15 == 0)
+    {
+        // Move Player
+        if (IsKeyDown(KEY_LEFT) && playerCoord.x > 1)
+        {
+            playerCoord.x -= 1;
+        }
+        else if (IsKeyDown(KEY_RIGHT) && playerCoord.x < gridWidth - 2)
+        {
+            playerCoord.x += 1;
+        }
+
+        // Shoot Bullet
+        if (IsKeyDown(KEY_SPACE))
+        {
+
+        }
+    }
+
+    framesCounter += 1;
 }
 
 // Gameplay Screen Draw logic
 void DrawGameplayScreen(void)
 {
-    // TODO: Draw GAMEPLAY screen here!
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PURPLE);
-    Vector2 pos = { 20, 10 };
-    DrawTextEx(font, "GAMEPLAY SCREEN", pos, font.baseSize*3.0f, 4, MAROON);
-    DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
+    // Draw Background
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+
+    // Draw Player
+    DrawRectangle(gridSize + ((playerCoord.x - 1) * gridSize), gridSize + (playerCoord.y * gridSize), gridSize * 3, gridSize, BLUE);
+    DrawRectangle(gridSize + ((playerCoord.x) * gridSize), gridSize + ((playerCoord.y - 1) * gridSize), gridSize, gridSize, BLUE);
+
+    // Draw Outline
+    Rectangle outlineRect;
+    outlineRect.x = gridSize;
+    outlineRect.y = gridSize;
+    outlineRect.width = GetScreenWidth() - (gridSize * 2);
+    outlineRect.height = GetScreenHeight() - (gridSize * 2);
+    DrawRectangleLinesEx(outlineRect, 2, PURPLE);
 }
 
 // Gameplay Screen Unload logic

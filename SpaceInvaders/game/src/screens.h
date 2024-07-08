@@ -39,6 +39,11 @@ extern Font font;
 extern Music music;
 extern Sound fxCoin;
 
+static const int gridWidth = 60;
+static const int gridHeight = 36;
+static const int gridSize = 20;
+static const int FPS = 60;
+
 #ifdef __cplusplus
 extern "C" {            // Prevents name mangling of functions
 #endif
