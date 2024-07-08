@@ -34,15 +34,18 @@ static int finishScreen = 0;
 
 // Player
 Vector2 playerCoord;
-static const int pMaxBullets = 256;
-int pBulletCoordX[256];
-int pBulletCoordY[256];
+static const int pMaxBullets = 64;
+int pBulletCoordX[64];
+int pBulletCoordY[64];
 int pActiveBullets = 0;
 
 // Enemies
+int maxEnemies = 256;
+bool enemyDied[256];
 int enemyCoordX[256];
 int enemyCoordY[256];
 int enemyCount = 0;
+int enemySpeed = 30;
 // TODO maybe add enemy bullets?
 //static const int eMaxBullets = 2048;
 //int eBulletCoordX[2048];
@@ -52,6 +55,16 @@ int enemyCount = 0;
 int min(int x, int y)
 {
     return (x < y) ? x : y;
+}
+
+int max(int x, int y)
+{
+    return (x > y) ? x : y;
+}
+
+int minEnemies()
+{
+    return min(enemyCount, maxEnemies);
 }
 
 Color getPlayerBulletColor(int i)
@@ -98,11 +111,16 @@ void UpdateGameplayScreen(void)
             playerCoord.x += 1;
         }
     }
-    if (framesCounter % 12 == 0)
+    if (framesCounter % enemySpeed == 0)
     {
         // Move Enemies
-        for (size_t i = 0; i < enemyCount; i++)
+        for (size_t i = 0; i < minEnemies(); i++)
         {
+            if (enemyDied[i])
+            {
+                continue;
+            }
+
             if (enemyCoordX[i] >= gridWidth - 1)
             {
                 enemyCoordY[i] += 3;
@@ -122,17 +140,25 @@ void UpdateGameplayScreen(void)
                 enemyCoordX[i] -= 1;
             }
 
-            if (enemyCoordX[i] > gridHeight)
+            if (enemyCoordY[i] > gridHeight)
             {
                 finishScreen = 1;
             }
         }
     }
 
+    // Enemy Speed Increaser
+    if (framesCounter % 300 == 0)
+    {
+        enemySpeed = max(1, enemySpeed - 1);
+    }
+
     // enemy spawner
     if (framesCounter % 120 == 0)
     {
-        enemyCoordX[enemyCount] = 1;
+        enemyCoordX[enemyCount % maxEnemies] = 1;
+        enemyCoordY[enemyCount % maxEnemies] = 0;
+        enemyDied[enemyCount % maxEnemies] = false;
         enemyCount += 1;
     }
 
@@ -156,6 +182,18 @@ void UpdateGameplayScreen(void)
         }
     }
 
+    // Bullet Collision Detection
+    for (size_t i = 0; i < min(pActiveBullets, pMaxBullets); i++)
+    {
+        for (size_t j = 0; j < minEnemies(); j++)
+        {
+            if ((pBulletCoordX[i] == enemyCoordX[j] - 1 || pBulletCoordX[i] == enemyCoordX[j] || pBulletCoordX[i] == enemyCoordX[j] + 1) && pBulletCoordY[i] == enemyCoordY[j])
+            {
+                enemyDied[j] = true;
+            }
+        }
+    }
+
     framesCounter += 1;
 }
 
@@ -175,9 +213,14 @@ void DrawGameplayScreen(void)
     }
 
     // Draw Enemies
-    for (size_t i = 0; i < enemyCount; i++)
+    for (size_t i = 0; i < minEnemies(); i++)
     {
-        DrawRectangle(gridSize + (enemyCoordX[i] * gridSize), gridSize + (enemyCoordY[i] * gridSize), gridSize, gridSize, getEnemyColor(i));
+        if (enemyDied[i])
+        {
+            continue;
+        }
+
+        DrawRectangle(gridSize + ((enemyCoordX[i] - 1) * gridSize), gridSize + (enemyCoordY[i] * gridSize), gridSize * 3, gridSize, getEnemyColor(i));
     }
 
     // Draw Player
