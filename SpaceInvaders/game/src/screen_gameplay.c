@@ -31,15 +31,37 @@
 //----------------------------------------------------------------------------------
 static int framesCounter = 0;
 static int finishScreen = 0;
+
+// Player
 Vector2 playerCoord;
-static const int maxBullets = 256;
-int bulletCoordX[256];
-int bulletCoordY[256];
-int activeBullets = 0;
+static const int pMaxBullets = 256;
+int pBulletCoordX[256];
+int pBulletCoordY[256];
+int pActiveBullets = 0;
+
+// Enemies
+int enemyCoordX[256];
+int enemyCoordY[256];
+int enemyCount = 0;
+// TODO maybe add enemy bullets?
+//static const int eMaxBullets = 2048;
+//int eBulletCoordX[2048];
+//int eBulletCoordY[2048];
+//int eActiveBullets = 0;
 
 int min(int x, int y)
 {
     return (x < y) ? x : y;
+}
+
+Color getPlayerBulletColor(int i)
+{
+    return CLITERAL(Color) { 0, 7 * (gridHeight - pBulletCoordY[i]), 255 - (7 * (gridHeight - pBulletCoordY[i])), 255 };
+}
+
+Color getEnemyColor(int i)
+{
+    return CLITERAL(Color) { 255, 7 * (gridHeight - enemyCoordY[i]), 0, 255 };
 }
 
 //----------------------------------------------------------------------------------
@@ -76,6 +98,43 @@ void UpdateGameplayScreen(void)
             playerCoord.x += 1;
         }
     }
+    if (framesCounter % 12 == 0)
+    {
+        // Move Enemies
+        for (size_t i = 0; i < enemyCount; i++)
+        {
+            if (enemyCoordX[i] >= gridWidth - 1)
+            {
+                enemyCoordY[i] += 3;
+                enemyCoordX[i] = gridWidth - 2;
+            }
+            else if (enemyCoordX[i] <= 0)
+            {
+                enemyCoordY[i] += 3;
+                enemyCoordX[i] = 1;
+            }
+            else if (enemyCoordY[i] % 2 == 0)
+            {
+                enemyCoordX[i] += 1;
+            }
+            else
+            {
+                enemyCoordX[i] -= 1;
+            }
+
+            if (enemyCoordX[i] > gridHeight)
+            {
+                finishScreen = 1;
+            }
+        }
+    }
+
+    // enemy spawner
+    if (framesCounter % 120 == 0)
+    {
+        enemyCoordX[enemyCount] = 1;
+        enemyCount += 1;
+    }
 
     // Bullet Game Tick
     if (framesCounter % 30 == 0)
@@ -83,17 +142,17 @@ void UpdateGameplayScreen(void)
         // Shoot Player Bullet
         if (IsKeyDown(KEY_SPACE))
         {
-            bulletCoordX[activeBullets % maxBullets] = playerCoord.x;
-            bulletCoordY[activeBullets % maxBullets] = playerCoord.y;
-            activeBullets += 1;
+            pBulletCoordX[pActiveBullets % pMaxBullets] = playerCoord.x;
+            pBulletCoordY[pActiveBullets % pMaxBullets] = playerCoord.y;
+            pActiveBullets += 1;
         }
     }
     if (framesCounter % 6 == 0)
     {
         // Move Player Bullets
-        for (size_t i = 0; i < min(activeBullets, maxBullets); i++)
+        for (size_t i = 0; i < min(pActiveBullets, pMaxBullets); i++)
         {
-            bulletCoordY[i] -= 1;
+            pBulletCoordY[i] -= 1;
         }
     }
 
@@ -107,12 +166,18 @@ void DrawGameplayScreen(void)
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 
     // Draw Player Bullets
-    for (size_t i = 0; i < min(activeBullets, maxBullets); i++)
+    for (size_t i = 0; i < min(pActiveBullets, pMaxBullets); i++)
     {
-        if (bulletCoordY[i] >= 0)
+        if (pBulletCoordY[i] >= 0)
         {
-            DrawRectangle(gridSize + (bulletCoordX[i] * gridSize) + (gridSize * 0.25), gridSize + (bulletCoordY[i] * gridSize) + (gridSize * 0.25), gridSize * 0.5, gridSize * 0.5, CLITERAL(Color){ 0, 7 * (gridHeight - bulletCoordY[i]), 255 - (7 * (gridHeight - bulletCoordY[i])), 255 });
+            DrawRectangle(gridSize + (pBulletCoordX[i] * gridSize) + (gridSize * 0.25), gridSize + (pBulletCoordY[i] * gridSize) + (gridSize * 0.25), gridSize * 0.5, gridSize * 0.5, getPlayerBulletColor(i));
         }
+    }
+
+    // Draw Enemies
+    for (size_t i = 0; i < enemyCount; i++)
+    {
+        DrawRectangle(gridSize + (enemyCoordX[i] * gridSize), gridSize + (enemyCoordY[i] * gridSize), gridSize, gridSize, getEnemyColor(i));
     }
 
     // Draw Player
