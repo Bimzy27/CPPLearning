@@ -27,6 +27,7 @@ GameScreen currentScreen = TITLE;
 Font font = { 0 };
 Music music = { 0 };
 Sound fxCoin = { 0 };
+int playerLength = 1;
 
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)

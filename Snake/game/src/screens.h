@@ -38,6 +38,7 @@ extern GameScreen currentScreen;
 extern Font font;
 extern Music music;
 extern Sound fxCoin;
+extern int playerLength;
 
 static const int gridWidth = 60;
 static const int gridHeight = 36;

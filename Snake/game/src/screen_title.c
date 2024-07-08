@@ -61,11 +61,12 @@ void UpdateTitleScreen(void)
 // Title Screen Draw logic
 void DrawTitleScreen(void)
 {
-    // TODO: Draw TITLE screen here!
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), GREEN);
-    Vector2 pos = { 20, 10 };
-    DrawTextEx(font, "TITLE SCREEN", pos, font.baseSize*3.0f, 4, DARKGREEN);
-    DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
+
+    Vector2 pos = { 100, 100 };
+    DrawTextEx(font, "SNAKE", pos, font.baseSize*8.0f, 4, DARKGREEN);
+    DrawText("PRESS ENTER or TAP to PLAY", 200, 400, 24, DARKGREEN);
+    DrawText("A GAME MADE BY BRANDEN IMMERZEEL", 200, 450, 20, DARKGREEN);
 }
 
 // Title Screen Unload logic

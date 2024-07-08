@@ -63,9 +63,10 @@ void DrawEndingScreen(void)
     // TODO: Draw ENDING screen here!
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLUE);
 
-    Vector2 pos = { 20, 10 };
-    DrawTextEx(font, "ENDING SCREEN", pos, font.baseSize*3.0f, 4, DARKBLUE);
-    DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+    Vector2 pos = { 100, 100 };
+    DrawTextEx(font, "GAME OVER!", pos, font.baseSize*8.0f, 4, DARKBLUE);
+    DrawText(TextFormat("SCORE: %02i", playerLength), 200, 350, 30, DARKBLUE);
+    DrawText("PRESS ENTER or TAP to CONTINUE", 200, 400, 20, DARKBLUE);
 }
 
 // Ending Screen Unload logic

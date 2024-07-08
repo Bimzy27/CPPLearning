@@ -35,7 +35,6 @@ static int framesCounter = 0;
 static int finishScreen = 0;
 int direction = 0;
 int prevBlockDirection = -1;
-int playerLength = 1;
 int playerCoordX[4096];
 int playerCoordY[4096];
 Color playerColors[10];
@@ -51,6 +50,8 @@ void InitGameplayScreen(void)
 {
     framesCounter = 0;
     finishScreen = 0;
+
+    playerLength = 1;
 
     playerCoordX[0] = gridWidth / 2;
     playerCoordY[0] = gridHeight / 2;
@@ -107,7 +108,7 @@ void UpdateGameplayScreen(void)
     }
 
     // Movement
-    if (framesCounter % 15 == 0)
+    if (framesCounter % 6 == 0)
     {
         for (size_t i = 0; i < playerLength - 1; i++)
         {
@@ -198,10 +199,10 @@ void DrawGameplayScreen(void)
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 
     // Draw Pickup
-    DrawRectangle(gridSize + (pickupCoord.x * gridSize), gridSize + (pickupCoord.y * gridSize), gridSize, gridSize, PINK);
+    int colorLength = sizeof(playerColors) / sizeof(playerColors[0]);
+    DrawRectangle(gridSize + (pickupCoord.x * gridSize), gridSize + (pickupCoord.y * gridSize), gridSize, gridSize, playerColors[playerLength % colorLength]);
 
     // Draw Player
-    int colorLength = sizeof(playerColors) / sizeof(playerColors[0]);
     for (size_t i = 0; i < playerLength; i++)
     {
         DrawRectangle(gridSize + (playerCoordX[i] * gridSize), gridSize + (playerCoordY[i] * gridSize), gridSize, gridSize, playerColors[i % colorLength]);
@@ -223,7 +224,6 @@ void UnloadGameplayScreen(void)
     finishScreen = 0;
     playerCoordX[0] = gridWidth / 2;
     playerCoordY[0] = gridHeight / 2;
-    playerLength = 1;
     direction = 0;
     pickupCoord.x = playerCoordX[0] + 15;
     pickupCoord.y = playerCoordY[0];
