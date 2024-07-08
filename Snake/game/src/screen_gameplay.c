@@ -34,7 +34,12 @@
 static int framesCounter = 0;
 static int finishScreen = 0;
 int direction = 0;
-Vector2 playerCoord;
+int prevBlockDirection = -1;
+int playerLength = 1;
+int playerCoordX[4096];
+int playerCoordY[4096];
+Color playerColors[10];
+
 Vector2 pickupCoord;
 
 //----------------------------------------------------------------------------------
@@ -47,10 +52,22 @@ void InitGameplayScreen(void)
     // TODO: Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
     finishScreen = 0;
-    playerCoord.x = gridWidth / 2;
-    playerCoord.y = gridHeight / 2;
-    pickupCoord.x = playerCoord.x + 15;
-    pickupCoord.y = playerCoord.y;
+
+    playerCoordX[0] = gridWidth / 2;
+    playerCoordY[0] = gridHeight / 2;
+    playerColors[0] = RED;
+    playerColors[1] = ORANGE;
+    playerColors[2] = YELLOW;
+    playerColors[3] = GREEN;
+    playerColors[4] = SKYBLUE;
+    playerColors[5] = BLUE;
+    playerColors[6] = DARKBLUE;
+    playerColors[7] = DARKPURPLE;
+    playerColors[8] = PURPLE;
+    playerColors[9] = PINK;
+
+    pickupCoord.x = playerCoordX[0] + 15;
+    pickupCoord.y = playerCoordY[0];
 
     srand(time(NULL));
 }
@@ -60,68 +77,90 @@ void UpdateGameplayScreen(void)
 {
     framesCounter += 1;
 
-    // Press enter or tap to change to ENDING screen
-    if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+    // User Input
+    if (IsKeyDown(KEY_RIGHT))
+    {
+        if (playerLength == 1 || playerCoordX[0] >= playerCoordX[1])
+        {
+            direction = 0;
+        }
+    }
+    else if (IsKeyDown(KEY_LEFT))
+    {
+        if (playerLength == 1 || playerCoordX[0] <= playerCoordX[1])
+        {
+            direction = 1;
+        }
+    }
+    else if (IsKeyDown(KEY_UP))
+    {
+        if (playerLength == 1 || playerCoordY[0] <= playerCoordY[1])
+        {
+            direction = 2;
+        }
+    }
+    else if (IsKeyDown(KEY_DOWN))
+    {
+        if (playerLength == 1 || playerCoordY[0] >= playerCoordY[1])
+        {
+            direction = 3;
+        }
+    }
+
+    // Movement
+    if (framesCounter % 15 == 0)
+    {
+        for (size_t i = 0; i < playerLength - 1; i++)
+        {
+            playerCoordX[playerLength - i - 1] = playerCoordX[playerLength - i - 2];
+            playerCoordY[playerLength - i - 1] = playerCoordY[playerLength - i - 2];
+        }
+
+        switch (direction)
+        {
+            case 0:
+            default:
+                playerCoordX[0] += 1;
+                break;
+            case 1:
+                playerCoordX[0] -= 1;
+                break;
+            case 2:
+                playerCoordY[0] -= 1;
+                break;
+            case 3:
+                playerCoordY[0] += 1;
+                break;
+        }
+    }
+
+    // Bounds collision
+    if (playerCoordX[0] < 0 || playerCoordX[0] >= gridWidth || playerCoordY[0] < 0 || playerCoordY[0] >= gridHeight)
     {
         finishScreen = 1;
         PlaySound(fxCoin);
     }
 
-    // User Input
-    if (IsKeyDown(KEY_RIGHT))
+    // Player collision
+    for (size_t i = 0; i < playerLength - 1; i++)
     {
-        direction = 0;
-    }
-    else if (IsKeyDown(KEY_LEFT))
-    {
-        direction = 1;
-    }
-    else if (IsKeyDown(KEY_UP))
-    {
-        direction = 2;
-    }
-    else if (IsKeyDown(KEY_DOWN))
-    {
-        direction = 3;
-    }
-
-    // Movement
-    if (framesCounter % 10 == 0)
-    {
-        switch (direction)
-        {
-        case 0:
-        default:
-            playerCoord.x += 1;
-            break;
-        case 1:
-            playerCoord.x -= 1;
-            break;
-        case 2:
-            playerCoord.y -= 1;
-            break;
-        case 3:
-            playerCoord.y += 1;
-            break;
-        }
-    }
-
-    // Bounds collision
-    if (playerCoord.x < 0 || playerCoord.x >= gridWidth || playerCoord.y < 0 || playerCoord.y >= gridHeight)
-    {
-        finishScreen = 1;
+        
     }
 
     // Pickup collision
-    if (playerCoord.x == pickupCoord.x && playerCoord.y == pickupCoord.y)
+    if (playerCoordX[0] == pickupCoord.x && playerCoordY[0] == pickupCoord.y)
     {
         // Relocate pickup
+        playerCoordX[playerLength] = playerCoordX[playerLength - 1];
+        playerCoordY[playerLength] = playerCoordY[playerLength - 1];
+        playerLength += 1;
+
         bool relocated = false;
         while (!relocated)
         {
             int x = rand() % gridWidth;
             int y = rand() % gridHeight;
-            if (playerCoord.x != x && playerCoord.y != y)
+            if (playerCoordX[0] != x && playerCoordY[0] != y)
             {
                 pickupCoord.x = x;
                 pickupCoord.y = y;
@@ -135,24 +174,26 @@ void UpdateGameplayScreen(void)
 // Gameplay Screen Draw logic
 void DrawGameplayScreen(void)
 {
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PURPLE);
+    // Draw Background
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 
     // Draw Pickup
-    DrawRectangle(gridSize + (pickupCoord.x * gridSize), gridSize + (pickupCoord.y * gridSize), gridSize, gridSize, RED);
+    DrawRectangle(gridSize + (pickupCoord.x * gridSize), gridSize + (pickupCoord.y * gridSize), gridSize, gridSize, PINK);
 
     // Draw Player
-    DrawRectangle(gridSize + (playerCoord.x * gridSize), gridSize + (playerCoord.y * gridSize), gridSize, gridSize, DARKBLUE);
+    int colorLength = sizeof(playerColors) / sizeof(playerColors[0]);
+    for (size_t i = 0; i < playerLength; i++)
+    {
+        DrawRectangle(gridSize + (playerCoordX[i] * gridSize), gridSize + (playerCoordY[i] * gridSize), gridSize, gridSize, playerColors[i % colorLength]);
+    }
 
+    // Draw Outline
     Rectangle outlineRect;
     outlineRect.x = gridSize;
     outlineRect.y = gridSize;
     outlineRect.width = GetScreenWidth() - (gridSize * 2);
     outlineRect.height = GetScreenHeight() - (gridSize * 2);
-    DrawRectangleLinesEx(outlineRect, 2, BLACK);
-
-    /*Vector2 pos = { 20, 10 };
-    DrawTextEx(font, "GAMEPLAY SCREEN", pos, font.baseSize*3.0f, 4, MAROON);
-    DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);*/
+    DrawRectangleLinesEx(outlineRect, 2, PURPLE);
 }
 
 // Gameplay Screen Unload logic
