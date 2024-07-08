@@ -31,9 +31,7 @@ Sound fxCoin = { 0 };
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
-static const int screenWidth = 800;
-static const int screenHeight = 460;
-static const int FPS = 60;
+
 
 // Required variables to manage screen transitions (fade-in, fade-out)
 static float transAlpha = 0.0f;
@@ -60,7 +58,7 @@ int main(void)
 {
     // Initialization
     //---------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "raylib game template");
+    InitWindow((gridWidth * gridSize) + (2 * gridSize), (gridHeight * gridSize) + (2 * gridSize), "Snake Game");
 
     InitAudioDevice();      // Initialize audio device
 

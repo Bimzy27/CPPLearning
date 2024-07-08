@@ -25,6 +25,8 @@
 
 #include "raylib.h"
 #include "screens.h"
+#include <time.h>
+#include <stdlib.h>
 
 //----------------------------------------------------------------------------------
 // Module Variables Definition (local)
@@ -32,7 +34,8 @@
 static int framesCounter = 0;
 static int finishScreen = 0;
 int direction = 0;
-Vector2 playerPosition;
+Vector2 playerCoord;
+Vector2 pickupCoord;
 
 //----------------------------------------------------------------------------------
 // Gameplay Screen Functions Definition
@@ -44,8 +47,12 @@ void InitGameplayScreen(void)
     // TODO: Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
     finishScreen = 0;
-    playerPosition.x = GetScreenWidth() / 2;
-    playerPosition.y = GetScreenHeight() / 2;
+    playerCoord.x = gridWidth / 2;
+    playerCoord.y = gridHeight / 2;
+    pickupCoord.x = playerCoord.x + 15;
+    pickupCoord.y = playerCoord.y;
+
+    srand(time(NULL));
 }
 
 // Gameplay Screen Update logic
@@ -79,24 +86,49 @@ void UpdateGameplayScreen(void)
     }
 
     // Movement
-    if (framesCounter % 20 == 0)
+    if (framesCounter % 10 == 0)
     {
         switch (direction)
         {
         case 0:
         default:
-            playerPosition.x += 10;
+            playerCoord.x += 1;
             break;
         case 1:
-            playerPosition.x -= 10;
+            playerCoord.x -= 1;
             break;
         case 2:
-            playerPosition.y -= 10;
+            playerCoord.y -= 1;
             break;
         case 3:
-            playerPosition.y += 10;
+            playerCoord.y += 1;
             break;
         }
+    }
+
+    // Bounds collision
+    if (playerCoord.x < 0 || playerCoord.x >= gridWidth || playerCoord.y < 0 || playerCoord.y >= gridHeight)
+    {
+        finishScreen = 1;
+    }
+
+    // Pickup collision
+    if (playerCoord.x == pickupCoord.x && playerCoord.y == pickupCoord.y)
+    {
+        // Relocate pickup
+        bool relocated = false;
+        while (!relocated)
+        {
+            int x = rand() % gridWidth;
+            int y = rand() % gridHeight;
+            if (playerCoord.x != x && playerCoord.y != y)
+            {
+                pickupCoord.x = x;
+                pickupCoord.y = y;
+                relocated = true;
+            }
+        }
+        PlaySound(fxCoin);
     }
 }
 
@@ -104,13 +136,18 @@ void UpdateGameplayScreen(void)
 void DrawGameplayScreen(void)
 {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PURPLE);
-    DrawRectangle(playerPosition.x, playerPosition.y, 10, 10, DARKBLUE);
+
+    // Draw Pickup
+    DrawRectangle(gridSize + (pickupCoord.x * gridSize), gridSize + (pickupCoord.y * gridSize), gridSize, gridSize, RED);
+
+    // Draw Player
+    DrawRectangle(gridSize + (playerCoord.x * gridSize), gridSize + (playerCoord.y * gridSize), gridSize, gridSize, DARKBLUE);
 
     Rectangle outlineRect;
-    outlineRect.x = 10;
-    outlineRect.y = 10;
-    outlineRect.width = GetScreenWidth() - 20;
-    outlineRect.height = GetScreenHeight() - 20;
+    outlineRect.x = gridSize;
+    outlineRect.y = gridSize;
+    outlineRect.width = GetScreenWidth() - (gridSize * 2);
+    outlineRect.height = GetScreenHeight() - (gridSize * 2);
     DrawRectangleLinesEx(outlineRect, 2, BLACK);
 
     /*Vector2 pos = { 20, 10 };
