@@ -32,6 +32,15 @@
 static int framesCounter = 0;
 static int finishScreen = 0;
 Vector2 playerCoord;
+static const int maxBullets = 256;
+int bulletCoordX[256];
+int bulletCoordY[256];
+int activeBullets = 0;
+
+int min(int x, int y)
+{
+    return (x < y) ? x : y;
+}
 
 //----------------------------------------------------------------------------------
 // Gameplay Screen Functions Definition
@@ -54,8 +63,8 @@ void UpdateGameplayScreen(void)
         PlaySound(fxCoin);
     }
 
-    // Game Tick
-    if (framesCounter % 15 == 0)
+    // Movement Game Tick
+    if (framesCounter % 12 == 0)
     {
         // Move Player
         if (IsKeyDown(KEY_LEFT) && playerCoord.x > 1)
@@ -66,11 +75,25 @@ void UpdateGameplayScreen(void)
         {
             playerCoord.x += 1;
         }
+    }
 
-        // Shoot Bullet
+    // Bullet Game Tick
+    if (framesCounter % 30 == 0)
+    {
+        // Shoot Player Bullet
         if (IsKeyDown(KEY_SPACE))
         {
-
+            bulletCoordX[activeBullets % maxBullets] = playerCoord.x;
+            bulletCoordY[activeBullets % maxBullets] = playerCoord.y;
+            activeBullets += 1;
+        }
+    }
+    if (framesCounter % 6 == 0)
+    {
+        // Move Player Bullets
+        for (size_t i = 0; i < min(activeBullets, maxBullets); i++)
+        {
+            bulletCoordY[i] -= 1;
         }
     }
 
@@ -82,6 +105,15 @@ void DrawGameplayScreen(void)
 {
     // Draw Background
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
+
+    // Draw Player Bullets
+    for (size_t i = 0; i < min(activeBullets, maxBullets); i++)
+    {
+        if (bulletCoordY[i] >= 0)
+        {
+            DrawRectangle(gridSize + (bulletCoordX[i] * gridSize) + (gridSize * 0.25), gridSize + (bulletCoordY[i] * gridSize) + (gridSize * 0.25), gridSize * 0.5, gridSize * 0.5, CLITERAL(Color){ 0, 7 * (gridHeight - bulletCoordY[i]), 255 - (7 * (gridHeight - bulletCoordY[i])), 255 });
+        }
+    }
 
     // Draw Player
     DrawRectangle(gridSize + ((playerCoord.x - 1) * gridSize), gridSize + (playerCoord.y * gridSize), gridSize * 3, gridSize, BLUE);
