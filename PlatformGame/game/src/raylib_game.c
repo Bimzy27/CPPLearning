@@ -28,12 +28,6 @@ Font font = { 0 };
 Music music = { 0 };
 Sound fxCoin = { 0 };
 
-//----------------------------------------------------------------------------------
-// Local Variables Definition (local to this module)
-//----------------------------------------------------------------------------------
-static const int screenWidth = 800;
-static const int screenHeight = 450;
-
 // Required variables to manage screen transitions (fade-in, fade-out)
 static float transAlpha = 0.0f;
 static bool onTransition = false;
@@ -59,7 +53,7 @@ int main(void)
 {
     // Initialization
     //---------------------------------------------------------
-    InitWindow((gridWidth * gridSize), (gridHeight * gridSize), "Platform Game");
+    InitWindow(screenWidth, screenHeight, "Platform Game");
 
     InitAudioDevice();      // Initialize audio device
 

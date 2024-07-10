@@ -32,6 +32,8 @@
 static int framesCounter = 0;
 static int finishScreen = 0;
 
+Vector2 playerPos;
+float playerSpeed;
 int map[gridHeight][gridWidth] = { 0 };
 
 Color getColorFromMapVal(int val)
@@ -45,6 +47,8 @@ Color getColorFromMapVal(int val)
         return DARKBROWN;
     case 2:
         return DARKGREEN;
+    case 3:
+        return (Color) { 0, 142, 44, 255 };
     }
 }
 
@@ -58,6 +62,10 @@ void InitGameplayScreen(void)
     framesCounter = 0;
     finishScreen = 0;
 
+    playerPos.x = screenWidth * 0.5;
+    playerPos.y = screenHeight - (gridSize * 4);
+    playerSpeed = 250.0f;
+
     // Initialize map ints
     for (int row = 0; row < gridHeight; row++) 
     {
@@ -67,7 +75,7 @@ void InitGameplayScreen(void)
                 map[row][col] = 1;
             }
             else if (row == gridHeight - 3) {
-                map[row][col] = 2;
+                map[row][col] = col % 4 == 0 ? 3 : 2;
             }
         }
     }
@@ -84,13 +92,22 @@ void UpdateGameplayScreen(void)
         finishScreen = 1;
         PlaySound(fxCoin);
     }
+
+    if (IsKeyDown(KEY_LEFT))
+    {
+        playerPos.x -= GetFrameTime() * playerSpeed;
+    }
+    else if (IsKeyDown(KEY_RIGHT))
+    {
+        playerPos.x += GetFrameTime() * playerSpeed;
+    }
 }
 
 // Gameplay Screen Draw logic
 void DrawGameplayScreen(void)
 {
+    // Draw Map
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
-
     for (int row = 0; row < gridHeight; row++)
     {
         for (int col = 0; col < gridWidth; col++)
@@ -98,6 +115,9 @@ void DrawGameplayScreen(void)
             DrawRectangle(col * gridSize, row * gridSize, gridSize, gridSize, getColorFromMapVal(map[row][col]));
         }
     }
+
+    // Draw Player
+    DrawRectangle(playerPos.x, playerPos.y, gridSize, gridSize, RED);
 }
 
 // Gameplay Screen Unload logic

@@ -42,6 +42,8 @@ extern Sound fxCoin;
 #define gridWidth 60
 #define gridHeight 36
 #define gridSize 20
+#define screenWidth gridWidth * gridSize
+#define screenHeight gridHeight * gridSize
 #define FPS 60
 
 #ifdef __cplusplus
