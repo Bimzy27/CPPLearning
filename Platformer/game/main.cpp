@@ -1,3 +1,10 @@
+/*
+Raylib example file.
+This is an example main file for a simple raylib project.
+Use this as a starting point or replace it with your code.
+
+For a C++ project simply rename the file to .cpp and run premake 
+
 -- Copyright (c) 2020-2024 Jeffery Myers
 --
 --This software is provided "as-is", without any express or implied warranty. In no event 
@@ -15,36 +22,32 @@
 --
 --  3. This notice may not be removed or altered from any source distribution.
 
-baseName = path.getbasename(os.getcwd());
+*/
 
-project (workspaceName)
-    kind "ConsoleApp"
-    location "./"
-    targetdir "../bin/%{cfg.buildcfg}"
+#include "raylib.h"
+#include <Player.h>
 
-    filter "configurations:Release"
-        kind "WindowedApp"
-        entrypoint "mainCRTStartup"
+int main ()
+{
+	// set up the window
+	InitWindow(1280, 800, "Hello Raylib");
 
-    filter "action:vs*"
-        debugdir "$(SolutionDir)"
+	Player player;
 
-    filter {"action:vs*", "configurations:Release"}
-            kind "WindowedApp"
-            entrypoint "mainCRTStartup"
-    filter {}
+	// game loop
+	while (!WindowShouldClose())
+	{
+		// drawing
+		BeginDrawing();
+		ClearBackground(SKYBLUE);
 
-    vpaths 
-    {
-        ["Header Files/*"] = { "include/**.h",  "include/**.hpp", "src/**.h", "src/**.hpp", "**.h", "**.hpp"},
-        ["Source Files/*"] = {"src/**.c", "src/**.cpp","**.c", "**.cpp"},
-    }
-    files {"**.c", "**.cpp", "**.h", "**.hpp"}
+		DrawText("Hello Raylib", 200,200,20,WHITE);
+		player.Update();
+		
+		EndDrawing();
+	}
 
-    includedirs { "./" }
-    includedirs { "src" }
-    includedirs { "include" }
-
-    link_raylib()
-
--- To link to a lib use link_to("LIB_FOLDER_NAME")
+	// cleanup
+	CloseWindow();
+	return 0;
+}
