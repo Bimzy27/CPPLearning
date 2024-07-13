@@ -39,6 +39,11 @@ int main ()
 	map.Initialize();
 	player.Initialize();
 
+	Camera2D camera = { 0 };
+	camera.target = CLITERAL(Vector2){ player.getX(), player.getY() };
+	camera.offset = CLITERAL(Vector2){ SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f };
+	camera.rotation = 0.0f;
+	camera.zoom = 1.0f;
 
 	// game loop
 	while (!WindowShouldClose())
@@ -46,9 +51,21 @@ int main ()
 		// drawing
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
-		
+
+		// Camera target follows player
+		camera.target = CLITERAL(Vector2){ player.getX(), player.getY() };
+
+		// Camera zoom controls
+		camera.zoom += ((float)GetMouseWheelMove() * 0.05f);
+		if (camera.zoom > 3.0f) camera.zoom = 3.0f;
+		else if (camera.zoom < 0.1f) camera.zoom = 0.1f;
+
+		BeginMode2D(camera);
+
 		map.Update();
 		player.Update();
+
+		EndMode2D();
 		
 		EndDrawing();
 	}

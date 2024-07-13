@@ -2,11 +2,10 @@
 #include <Main.h>
 #include <raylib.h>
 
-#define GRID_WIDTH 41
-#define GRID_HEIGHT 26
-#define CELL_SIZE 20
 
-int grid[GRID_WIDTH][GRID_HEIGHT];
+#define MAP_WIDTH GRID_WIDTH * 3
+
+int grid[MAP_WIDTH][GRID_HEIGHT];
 
 Color getMapCellColor(int colorIndex)
 {

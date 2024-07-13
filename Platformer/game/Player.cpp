@@ -2,15 +2,21 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <Main.h>
+#include <algorithm>
 
 const float moveSpeed = 500.0f;
+const float jumpForce = 300.0f;
 Vector2 position;
-Vector2 size;
+Vector2 momentum;
+bool isGrounded;
+
+float getGroundHeight()
+{
+	return GROUND_HEIGHT - (CELL_SIZE / 2);
+}
 
 void Player::Initialize()
 {
-	size.x = 30;
-	size.y = 30;
 	position.x = SCREEN_WIDTH / 2;
 	position.y = SCREEN_HEIGHT / 2;
 }
@@ -22,10 +28,11 @@ void Player::Deinitialize()
 
 void Player::Update()
 {
-	DrawRectangle(position.x - (size.x / 2), position.y - (size.y / 2), size.x, size.y, RED);
+	DrawRectangle(position.x - (CELL_SIZE / 2), position.y - (CELL_SIZE / 2), CELL_SIZE, CELL_SIZE, RED);
 
 	float deltaTime = GetFrameTime();
 
+	// Lateral movement
 	if (IsKeyDown(KEY_LEFT))
 	{
 		position.x -= moveSpeed * deltaTime;
@@ -34,4 +41,34 @@ void Player::Update()
 	{
 		position.x += moveSpeed * deltaTime;
 	}
+
+	// Apply gravity
+	isGrounded = position.y >= getGroundHeight();
+
+	if (isGrounded && IsKeyPressed(KEY_SPACE))
+	{
+		momentum.y += jumpForce;
+	}
+
+	if (isGrounded)
+	{
+		momentum.y = std::max(0.0f, momentum.y);
+		position.y = getGroundHeight();
+	}
+	else
+	{
+		momentum.y -= GRAVITY * deltaTime;
+	}
+
+	position.y -= momentum.y * deltaTime;
+}
+
+float Player::getX()
+{
+	return position.x;
+}
+
+float Player::getY()
+{
+	return position.y;
 }
