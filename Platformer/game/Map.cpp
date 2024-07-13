@@ -18,6 +18,8 @@ Color getMapCellColor(int colorIndex)
         return DARKBROWN;
     case 2:
         return DARKGREEN;
+    case 3:
+        return CLITERAL(Color) { 0, 100, 44, 255 };
     }
 }
 
@@ -33,9 +35,9 @@ void Map::Initialize()
                 continue;
             }
 
-            if (y >= GRID_HEIGHT - 4)
+            if (y >= GRID_HEIGHT - 4) // Green
             {
-                grid[x][y] = 2;
+                grid[x][y] = x % 3 == 0 ? 3 : 2;
                 continue;
             }
 
