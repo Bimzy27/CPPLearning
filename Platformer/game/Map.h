@@ -1,5 +1,6 @@
 #pragma once
-class Player
+
+class Map
 {
 public:
 	void Initialize();

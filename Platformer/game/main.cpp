@@ -26,13 +26,19 @@ For a C++ project simply rename the file to .cpp and run premake
 
 #include "raylib.h"
 #include <Player.h>
+#include <Main.h>
+#include <Map.h>
 
 int main ()
 {
-	// set up the window
-	InitWindow(1280, 800, "Hello Raylib");
-
+	Map map;
 	Player player;
+
+	// set up the window
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Platformer");
+	map.Initialize();
+	player.Initialize();
+
 
 	// game loop
 	while (!WindowShouldClose())
@@ -40,14 +46,16 @@ int main ()
 		// drawing
 		BeginDrawing();
 		ClearBackground(SKYBLUE);
-
-		DrawText("Hello Raylib", 200,200,20,WHITE);
+		
+		map.Update();
 		player.Update();
 		
 		EndDrawing();
 	}
 
 	// cleanup
+	player.Deinitialize();
+	map.Deinitialize();
 	CloseWindow();
 	return 0;
 }

@@ -10,8 +10,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Main.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h" />
   </ItemGroup>
 </Project>
