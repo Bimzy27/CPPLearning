@@ -40,7 +40,7 @@ int main ()
 	player.Initialize();
 
 	Camera2D camera = { 0 };
-	camera.target = CLITERAL(Vector2){ player.getX(), player.getY() };
+	camera.target = CLITERAL(Vector2){ player.getX(), SCREEN_HEIGHT / 2.0f };
 	camera.offset = CLITERAL(Vector2){ SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
@@ -53,7 +53,7 @@ int main ()
 		ClearBackground(SKYBLUE);
 
 		// Camera target follows player
-		camera.target = CLITERAL(Vector2){ player.getX(), player.getY() };
+		camera.target = CLITERAL(Vector2){ player.getX(), SCREEN_HEIGHT / 2.0f };
 
 		// Camera zoom controls
 		camera.zoom += ((float)GetMouseWheelMove() * 0.05f);

@@ -17,7 +17,7 @@ float getGroundHeight()
 
 void Player::Initialize()
 {
-	position.x = SCREEN_WIDTH / 2;
+	position.x = 0;
 	position.y = SCREEN_HEIGHT / 2;
 }
 
