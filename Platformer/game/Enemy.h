@@ -10,7 +10,7 @@ public:
 	void Deinitialize() override;
 	void Update() override;
 private:
-	const float moveSpeed = 300.0f;
+	const float moveSpeed = 100.0f;
 
 	Vector2 target;
 	Vector2 position;
