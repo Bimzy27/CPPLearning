@@ -14,4 +14,5 @@ private:
 
 	Vector2 target;
 	Vector2 position;
+	bool hit = false;
 };

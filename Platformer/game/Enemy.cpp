@@ -3,6 +3,7 @@
 #include <Main.h>
 #include <VectorUtility.h>
 #include <stdio.h>
+#include <GameState.h>
 
 void Enemy::Initialize()
 {
@@ -26,5 +27,10 @@ void Enemy::Update()
 
 	Vector2 direction = Normalize(target - position);
 	position = position + (direction * (deltaTime * moveSpeed));
-	printf("Direction: %f <==> %f\n", direction.x, direction.y);
+
+	if (!hit && Distance(position, target) < 10.0f)
+	{
+		hit = true;
+		GameState::GetInstance()->loseHealth(1);
+	}
 }

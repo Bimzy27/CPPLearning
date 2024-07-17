@@ -12,16 +12,24 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Structure.cpp" />
+    <ClCompile Include="Structure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -39,9 +47,23 @@
     <ClInclude Include="Player.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateObserver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthDisplay.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="VectorUtility.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Structure.h" />
   </ItemGroup>
 </Project>

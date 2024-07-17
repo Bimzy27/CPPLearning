@@ -266,7 +266,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="HealthDisplay.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -280,6 +282,10 @@
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStateObserver.h" />
+    <ClInclude Include="HealthDisplay.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
