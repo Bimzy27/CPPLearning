@@ -35,17 +35,17 @@ For a C++ project simply rename the file to .cpp and run premake
 
 int main ()
 {
-	GameState gameState(10);
+	GameState* gameState = GameState::GetInstance();
 	Map map;
 	Player player;
 	Enemy enemy;
 	Structure structure;
-	HUD hud(&gameState);
+	HUD hud(gameState);
 
 	// set up the window
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Platformer");
 
-	gameState.Initialize();
+	gameState->Initialize();
 	map.Initialize();
 	player.Initialize();
 	enemy.Initialize();
@@ -95,7 +95,7 @@ int main ()
 	enemy.Deinitialize();
 	player.Deinitialize();
 	map.Deinitialize();
-	gameState.Deinitialize();
+	gameState->Deinitialize();
 	CloseWindow();
 	return 0;
 }

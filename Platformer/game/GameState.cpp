@@ -2,8 +2,13 @@
 #include <utility>
 #include <stdio.h>
 
+GameState* GameState::instance = nullptr;;
+
 GameState* GameState::GetInstance()
 {
+	if (instance == nullptr) {
+		instance = new GameState(10);
+	}
 	return instance;
 }
 
@@ -30,13 +35,6 @@ void GameState::addObserver(HealthObserver* observer)
 void GameState::removeObserver(HealthObserver* observer) 
 {
 	observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-}
-
-GameState::GameState(int maxHealth)
-{
-	this->maxHealth = maxHealth;
-	curHealth = maxHealth;
-	instance = this;
 }
 
 void GameState::Initialize()
