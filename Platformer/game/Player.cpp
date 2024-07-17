@@ -4,12 +4,6 @@
 #include <Main.h>
 #include <algorithm>
 
-const float moveSpeed = 500.0f;
-const float jumpForce = 300.0f;
-Vector2 position;
-Vector2 momentum;
-bool isGrounded;
-
 float getGroundHeight()
 {
 	return GROUND_HEIGHT - (CELL_SIZE / 2);
