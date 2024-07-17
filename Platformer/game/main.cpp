@@ -29,18 +29,21 @@ For a C++ project simply rename the file to .cpp and run premake
 #include <Main.h>
 #include <Map.h>
 #include <Enemy.h>
+#include <Structure.h>
 
 int main ()
 {
 	Map map;
 	Player player;
 	Enemy enemy;
+	Structure structure;
 
 	// set up the window
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Platformer");
 	map.Initialize();
 	player.Initialize();
 	enemy.Initialize();
+	structure.Initialize();
 
 	Camera2D camera = { 0 };
 	camera.target = CLITERAL(Vector2){ player.getX(), SCREEN_HEIGHT / 2.0f };
@@ -67,6 +70,7 @@ int main ()
 
 		map.Update();
 		enemy.Update();
+		structure.Update();
 		player.Update();
 
 		EndMode2D();
@@ -75,6 +79,7 @@ int main ()
 	}
 
 	// cleanup
+	structure.Deinitialize();
 	enemy.Deinitialize();
 	player.Deinitialize();
 	map.Deinitialize();

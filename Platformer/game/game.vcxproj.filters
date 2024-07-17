@@ -21,6 +21,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Structure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -41,5 +42,6 @@
     <ClInclude Include="VectorUtility.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Structure.h" />
   </ItemGroup>
 </Project>
