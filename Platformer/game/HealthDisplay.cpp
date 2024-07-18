@@ -20,11 +20,10 @@ void HealthDisplay::Deinitialize()
 
 void HealthDisplay::Update()
 {
-	DrawText(getHealthText(curHealth).c_str(), 10, 10, 34, WHITE);
+	DrawText(getHealthText(curHealth).c_str(), 10, 10, 28, WHITE);
 }
 
 void HealthDisplay::onHealthChanged(int newHealth)
 {
-	std::cout << "Health updated: " << newHealth << std::endl;
 	curHealth = newHealth;
 }

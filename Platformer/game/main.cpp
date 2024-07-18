@@ -32,12 +32,14 @@ For a C++ project simply rename the file to .cpp and run premake
 #include <Structure.h>
 #include <GameState.h>
 #include <HUD.h>
+#include <EnemySystem.h>
 
 int main ()
 {
 	GameState* gameState = GameState::GetInstance();
 	Map map;
 	Player player;
+	EnemySystem enemySystem;
 	Enemy enemy;
 	Structure structure;
 	HUD hud(gameState);
@@ -48,6 +50,7 @@ int main ()
 	gameState->Initialize();
 	map.Initialize();
 	player.Initialize();
+	enemySystem.Initialize();
 	enemy.Initialize();
 	structure.Initialize();
 	hud.Initialize();
@@ -77,6 +80,7 @@ int main ()
 
 		// Update Entities
 		map.Update();
+		enemySystem.Update();
 		enemy.Update();
 		structure.Update();
 		player.Update();
@@ -93,6 +97,7 @@ int main ()
 	hud.Deinitialize();
 	structure.Deinitialize();
 	enemy.Deinitialize();
+	enemySystem.Deinitialize();
 	player.Deinitialize();
 	map.Deinitialize();
 	gameState->Deinitialize();
